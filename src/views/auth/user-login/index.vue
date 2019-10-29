@@ -53,6 +53,7 @@
       };
     },
     mounted () {
+      // 渲染时获取图像验证码
       this.getImage();
       this.weChatLogin();
     },
@@ -127,6 +128,7 @@
             'Content-Type': 'application/x-www-form-urlencoded',
             'deviceId': this.deviceId
           },
+          // TODO 这里是不是uac才对
           url: '/sac/auth/form',
           auth: {
             username: 'paascloud-client-auth',
@@ -138,6 +140,7 @@
             imageCode: this.loginForm.captchaCode
           }
         }).then((res) => {
+          // TODO 不一定登录成功,所以要重新获取验证码？个人觉得应该是登录失败才重新获取验证码
           this.getImage();
           if (res && res.code === 200) {
             console.info('登录成功, ', res);
@@ -149,6 +152,8 @@
         });
       },
       getImage () {
+        // deviceId为何使用时间戳？？？？？？？
+        // 为什么使用deviceId?作用是什么？要唯一,如何辨别是前后两次获取的验证码
         this.deviceId = new Date().getTime();
         let that = this;
         that.$http({
